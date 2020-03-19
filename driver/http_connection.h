@@ -27,5 +27,7 @@ private:
     std::istream * in = nullptr;
     std::string error;
     bool errorReceived = false;
+	bool firstQuery = true;
+	std::size_t valuesPosition = std::string::npos;
 };
 

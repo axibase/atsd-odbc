@@ -30,6 +30,16 @@ void HttpConnection::close() {
 }
 
 void HttpConnection::send(std::string query) {
+	if(firstQuery) {
+		firstQuery = false;
+		std::string pattern = "VALUES";
+		valuesPosition = query.find(pattern);
+		if(valuesPosition != std::string::npos) {
+			valuesPosition += pattern.length();
+		}
+	} else if(valuesPosition != std::string::npos) {
+		query = query.substr(valuesPosition, std::string::npos);
+	}
     *out << query << "\n";
     out->flush();
 }
