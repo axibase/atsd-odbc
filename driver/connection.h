@@ -74,6 +74,8 @@ private:
 
     /// Sets uninitialized fields to their default values.
     void setDefaults();
+	
+	bool isSslPort(int port);
 
 private:
     std::string database;

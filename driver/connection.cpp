@@ -342,7 +342,7 @@ void Connection::loadConfiguration() {
     if (database.empty())
         database = stringFromMYTCHAR(ci.database);
     auto sslmode = stringFromMYTCHAR(ci.sslmode);
-    if (proto.empty() && (sslmode == "require" || sslmode == "prefer" || sslmode == "allow" || port == 8443))
+    if (proto.empty() && (sslmode == "require" || sslmode == "prefer" || sslmode == "allow" || isSslPort(port)))
         proto = "https";
     if (sslmode == "require")
         ssl_strict = true;
@@ -399,7 +399,7 @@ void Connection::setDefaults() {
     }
 
     if (proto.empty())
-        proto = (port == 8443 || port == 443? "https" : "http");
+        proto = (isSslPort(port) ? "https" : "http");
     if (server.empty())
         server = "localhost";
     if (port == 0)
@@ -418,4 +418,8 @@ void Connection::setDefaults() {
         timeout = 30;
     if (connection_timeout == 0)
         connection_timeout = timeout;
+}
+
+bool Connection::isSslPort(int port) {
+	return port % 1000 == 443;
 }
